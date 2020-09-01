@@ -1,32 +1,21 @@
 version: 0.0
-os: ubuntu
+os: linux 
 files:
-- source: /
- destination: /home/ubuntu/my-app
-
-permissions:
-- object: /
-   pattern: "**"
-   owner: ubuntu
-   group: ubuntu
+  - source: /
+    destination: /home/ubuntu/nodejs
 
 hooks:
-ApplicationStop:
-   - location: bin/app-stop
-     timeout: 10
-     runas: ubuntu
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 300
+      owner: ubuntu
 
-AfterInstall:
-   - location: bin/install-pkgs
-     timeout: 1200
-     runas: ubuntu
+  AfterInstall:
+    - location: scripts/after_install.sh
+      timeout: 300
+      owner: ubuntu
 
-ApplicationStart:
-   - location: bin/app-start
-     timeout: 60
-     runas: ubuntu
-
-ValidateService:
-   - location: bin/app-validate
-     timeout: 10
-     runas: ubuntu
+  ApplicationStart:
+    - location: scripts/application_start.sh
+      timeout: 300
+      owner: ubuntu
